@@ -1,0 +1,110 @@
+.mfa-setup-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.mfa-setup-content {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.mfa-setup-content h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.mfa-instructions {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.mfa-instructions ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #555;
+}
+
+.mfa-instructions li {
+  margin-bottom: 0.5rem;
+}
+
+.qr-code-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.qr-code {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  background: white;
+  margin-bottom: 1rem;
+}
+
+.manual-entry {
+  margin-top: 1rem;
+}
+
+.manual-entry p {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.secret-code {
+  display: block;
+  background-color: #f5f5f5;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  color: #333;
+  word-break: break-all;
+  user-select: all;
+}
+
+.verify-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.verify-form .form-control {
+  text-align: center;
+  font-size: 1.2rem;
+  letter-spacing: 0.2rem;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.form-actions .btn {
+  width: auto;
+  padding: 0.75rem 1.5rem;
+}

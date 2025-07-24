@@ -1,0 +1,17 @@
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/controller/AuthController.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/repository/UserRepository.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/security/UserDetailsImpl.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/security/AuthTokenFilter.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/dto/MfaSetupResponse.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/security/UserDetailsServiceImpl.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/config/CorsConfig.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/service/MfaService.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/dto/LoginRequest.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/config/WebSecurityConfig.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/MfaDemoApplication.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/dto/JwtResponse.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/entity/User.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/dto/SignupRequest.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/dto/MessageResponse.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/security/JwtUtils.java
+/Users/varaprasadh/workspace/office/mfa-app/backend/src/main/java/com/example/mfademo/controller/UserController.java
