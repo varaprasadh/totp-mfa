@@ -75,8 +75,28 @@ public class MfaService {
             try {
                 int expectedCode = googleAuthenticator.getTotpPassword(secret);
                 System.out.println("Expected TOTP code right now: " + String.format("%06d", expectedCode));
+                
+                // Let's also generate codes for nearby time windows to see the pattern
+                System.out.println("=== TOTP Codes for Different Time Windows ===");
+                for (int i = -2; i <= 2; i++) {
+                    long timeWindow = (currentTimeMillis / 30000L) + i;
+                    int windowCode = googleAuthenticator.getTotpPassword(secret, timeWindow);
+                    System.out.println("Window " + i + " (30s " + (i < 0 ? "ago" : i > 0 ? "future" : "now") + "): " + String.format("%06d", windowCode));
+                }
+                
+                // Check if the user's code matches any recent time window
+                for (int i = -5; i <= 5; i++) {
+                    long timeWindow = (currentTimeMillis / 30000L) + i;
+                    int windowCode = googleAuthenticator.getTotpPassword(secret, timeWindow);
+                    if (windowCode == verificationCode) {
+                        System.out.println("⚠️ User's code matches time window " + i + " (" + (i * 30) + " seconds offset)");
+                        System.out.println("This suggests a time sync issue between server and phone!");
+                    }
+                }
+                
             } catch (Exception e) {
                 System.out.println("Error getting expected TOTP: " + e.getMessage());
+                e.printStackTrace();
             }
             
             // Try the simple authorize method first (current time window)
