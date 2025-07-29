@@ -7,7 +7,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
-import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -58,99 +57,10 @@ public class MfaService {
     
     public boolean verifyCode(String secret, String code) {
         try {
-            int verificationCode = Integer.parseInt(code);
-            
-            // Enhanced debugging
-            System.out.println("=== MFA Verification Debug ===");
-            System.out.println("Secret (first 8 chars): " + secret.substring(0, Math.min(8, secret.length())));
-            System.out.println("Secret length: " + secret.length());
-            System.out.println("Code: " + code);
-            
-            // The GoogleAuth library expects time in milliseconds, not seconds!
-            long currentTimeMillis = System.currentTimeMillis();
-            System.out.println("Current time (millis): " + currentTimeMillis);
-            System.out.println("Current time (seconds): " + (currentTimeMillis / 1000));
-            
-            // First, let's see what code the library thinks should be valid right now
-            try {
-                int expectedCode = googleAuthenticator.getTotpPassword(secret);
-                System.out.println("Expected TOTP code right now: " + String.format("%06d", expectedCode));
-                
-                // Let's also generate codes for nearby time windows to see the pattern
-                System.out.println("=== TOTP Codes for Different Time Windows ===");
-                for (int i = -2; i <= 2; i++) {
-                    long timeWindow = (currentTimeMillis / 30000L) + i;
-                    int windowCode = googleAuthenticator.getTotpPassword(secret, timeWindow);
-                    System.out.println("Window " + i + " (30s " + (i < 0 ? "ago" : i > 0 ? "future" : "now") + "): " + String.format("%06d", windowCode));
-                }
-                
-                // Check if the user's code matches any recent time window
-                for (int i = -5; i <= 5; i++) {
-                    long timeWindow = (currentTimeMillis / 30000L) + i;
-                    int windowCode = googleAuthenticator.getTotpPassword(secret, timeWindow);
-                    if (windowCode == verificationCode) {
-                        System.out.println("⚠️ User's code matches time window " + i + " (" + (i * 30) + " seconds offset)");
-                        System.out.println("This suggests a time sync issue between server and phone!");
-                    }
-                }
-                
-            } catch (Exception e) {
-                System.out.println("Error getting expected TOTP: " + e.getMessage());
-                e.printStackTrace();
-            }
-            
-            // Try the simple authorize method first (current time window)
+            int verificationCode = Integer.parseInt(code);                        
             boolean isValid = googleAuthenticator.authorize(secret, verificationCode);
             System.out.println("Current time window result: " + isValid);
-            
-            if (isValid) {
-                System.out.println("✅ MFA Verification SUCCESS with current time");
-                return true;
-            }
-            
-            // Try a more comprehensive approach - test if it's a timing issue
-            // Let's try with time in different formats and see what works
-            
-            // Method 1: Try with time in milliseconds
-            for (int windowOffset = -4; windowOffset <= 4; windowOffset++) {
-                long testTimeMillis = currentTimeMillis + (windowOffset * 30000L); // 30-second windows in millis
-                
-                try {
-                    isValid = googleAuthenticator.authorize(secret, verificationCode, testTimeMillis);
-                    System.out.println("Time window (millis) " + windowOffset + " (time=" + testTimeMillis + "): " + isValid);
-                    
-                    if (isValid) {
-                        System.out.println("✅ MFA Verification SUCCESS with millis time window: " + windowOffset);
-                        return true;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error with millis time window " + windowOffset + ": " + e.getMessage());
-                }
-            }
-            
-            // Method 2: Try with time in 30-second steps (TOTP standard)
-            long timeStep = currentTimeMillis / 30000L; // 30-second time steps
-            System.out.println("Current time step: " + timeStep);
-            
-            for (int windowOffset = -4; windowOffset <= 4; windowOffset++) {
-                long testTimeStep = timeStep + windowOffset;
-                long testTimeMillis = testTimeStep * 30000L;
-                
-                try {
-                    isValid = googleAuthenticator.authorize(secret, verificationCode, testTimeMillis);
-                    System.out.println("Time step window " + windowOffset + " (step=" + testTimeStep + ", millis=" + testTimeMillis + "): " + isValid);
-                    
-                    if (isValid) {
-                        System.out.println("✅ MFA Verification SUCCESS with time step: " + windowOffset);
-                        return true;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error with time step " + windowOffset + ": " + e.getMessage());
-                }
-            }
-            
-            System.out.println("❌ MFA Verification FAILED for all time windows and methods");
-            return false;
+            return isValid;
             
         } catch (NumberFormatException e) {
             System.out.println("MFA Verification failed - Invalid code format: " + code);
